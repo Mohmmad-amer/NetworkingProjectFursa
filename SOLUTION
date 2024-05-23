@@ -46,7 +46,6 @@ Public to private num of hops
 0
 the router at that hop doesn't respond
 
-
 DNS queries from the private instance
 -------------------
 yes you can , private server can talk with public server so it can send him like googele.com using port and the public server do the
