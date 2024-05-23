@@ -6,6 +6,7 @@ if [ -z "$KEY_PATH" ]; then
     exit 5
 fi
 
+
 # check if ip add are given
 if [ "$#" -eq 0 ]; then
     echo "Please provide bastion IP address"
