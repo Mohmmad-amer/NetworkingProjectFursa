@@ -24,6 +24,9 @@ rm respon
 
 #STEP 3 Server Certificate Verification
 
+
+
+# here i verify the exit code in the 2 command th wget and openssl and exit 5 if error happened
 # to check if cert.pem is valid
 wget "https://alonitac.github.io/DevOpsTheHardWay/networking_project/cert-ca-aws.pem"
 
@@ -61,14 +64,14 @@ body="{\"sessionID\": \"$sessionID\",\"masterKey\": \"$MASTER_KEY_ENC\",\"sample
 # send message and save the respon
 SAMPLE_MESSAGE_REC=$(curl -s -X POST -H "Content-Type: application/json" -d "$body" "$1":8080/keyexchange | jq -r '.encryptedSampleMessage')
 
-# DECREPT THE MESSAGE
-DECREPT_MESSAGE=$(echo "$SAMPLE_MESSAGE_REC" | base64 -d | openssl enc -d -aes-256-cbc -pbkdf2 -k "$MASTER_KEY")
+# DECRYPT THE MESSAGE
+DECRYPT_MESSAGE=$(echo "$SAMPLE_MESSAGE_REC" | base64 -d | openssl enc -d -aes-256-cbc -pbkdf2 -k "$MASTER_KEY")
 
 
 #STEP 6 Client verification message
 
 #compare the 2 strings
-if [[ "$DECREPT_MESSAGE" == "$sampleMessagesent" ]]; then
+if [[ "$DECRYPT_MESSAGE" == "$sampleMessagesent" ]]; then
     echo "Client-Server TLS handshake has been completed successfully"
 else
     echo "Server symmetric encryption using the exchanged master-key has failed."
