@@ -38,7 +38,7 @@ fi
 
 openssl verify -CAfile cert-ca-aws.pem cert.pem
 
-# check exit code if it faild exit with code 5
+# check exit code if it failed exit with code 5
 if [ $? -ne 0 ];then
     echo "Server Certificate is invalid."
     exit 5
