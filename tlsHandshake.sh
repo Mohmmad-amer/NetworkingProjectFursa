@@ -35,6 +35,12 @@ fi
 
 openssl verify -CAfile cert-ca-aws.pem cert.pem
 
+# check exit code if it faild exit with code 5
+if [ $? -ne 0 ];then
+    echo "Server Certificate is invalid."
+    exit 5
+fi
+
 rm cert-ca-aws.pem
 
 #STEP 4-5 Client-Server master-key exchange GENERATE NEW KEY TO SEND TO SERVER AND RECIVE RESPONE BACK
