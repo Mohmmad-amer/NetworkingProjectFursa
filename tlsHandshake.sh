@@ -6,7 +6,7 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-#STEP 1-2 the client sends a Client Hello message to the server and take the respone back
+#STEP 1-2 the client sends a Client Hello message to the server and take the response back
 curl -s  -X POST -H "Content-Type: application/json"   -d '{"version": "1.3", "ciphersSuites": ["TLS_AES_128_GCM_SHA256", "TLS_CHACHA20_POLY1305_SHA256"], "message": "Client Hello"}'   http://$1:8080/clienthello > respon
 
 
@@ -46,7 +46,7 @@ fi
 
 rm cert-ca-aws.pem
 
-#STEP 4-5 Client-Server master-key exchange GENERATE NEW KEY TO SEND TO SERVER AND RECIVE RESPONE BACK
+#STEP 4-5 Client-Server master-key exchange GENERATE NEW KEY TO SEND TO SERVER AND RECEIVE RESPONSE BACK
 
 openssl rand -base64 32 > master-key
 
