@@ -8,6 +8,12 @@ fi
 
 #STEP 1-2 the client sends a Client Hello message to the server and take the respone back
 curl -s  -X POST -H "Content-Type: application/json"   -d '{"version": "1.3", "ciphersSuites": ["TLS_AES_128_GCM_SHA256", "TLS_CHACHA20_POLY1305_SHA256"], "message": "Client Hello"}'   http://$1:8080/clienthello > respon
+
+if [ $? -ne 0 ];then
+    echo "Server Certificate is invalid."
+    exit 5
+fi
+
 jq -r '.serverCert' respon > cert.pem
 
 # var to hold session id
@@ -36,7 +42,8 @@ openssl rand -base64 32 > master-key
 MASTER_KEY=$(cat master-key)
 MASTER_KEY_ENC=$(openssl smime -encrypt -aes-256-cbc -in master-key -outform DER cert.pem | base64 -w 0)
 
-
+rm cert.pem
+rm master-key
 # body of the request
 sampleMessagesent="Hi server, please encrypt me and send to client!"
 body="{\"sessionID\": \"$sessionID\",\"masterKey\": \"$MASTER_KEY_ENC\",\"sampleMessage\": \"$sampleMessagesent\"}"
