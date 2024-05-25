@@ -9,6 +9,7 @@ fi
 #STEP 1-2 the client sends a Client Hello message to the server and take the respone back
 curl -s  -X POST -H "Content-Type: application/json"   -d '{"version": "1.3", "ciphersSuites": ["TLS_AES_128_GCM_SHA256", "TLS_CHACHA20_POLY1305_SHA256"], "message": "Client Hello"}'   http://$1:8080/clienthello > respon
 
+
 if [ $? -ne 0 ];then
     echo "Server Certificate is invalid."
     exit 5
@@ -25,14 +26,16 @@ rm respon
 
 # to check if cert.pem is valid
 wget "https://alonitac.github.io/DevOpsTheHardWay/networking_project/cert-ca-aws.pem"
-openssl verify -CAfile cert-ca-aws.pem cert.pem
-rm cert-ca-aws.pem
 
 # check exit code if it faild exit with code 5
 if [ $? -ne 0 ];then
     echo "Server Certificate is invalid."
     exit 5
 fi
+
+openssl verify -CAfile cert-ca-aws.pem cert.pem
+
+rm cert-ca-aws.pem
 
 #STEP 4-5 Client-Server master-key exchange GENERATE NEW KEY TO SEND TO SERVER AND RECIVE RESPONE BACK
 
